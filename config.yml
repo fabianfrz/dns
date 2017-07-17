@@ -1,0 +1,12 @@
+---
+DNS64Prefix: '1234::'
+Listen:
+  - proto: udp
+    host: '127.0.0.1'
+    port: 5300
+Forwarder:
+  - proto: udp
+    host: '192.168.1.1'
+    port: 53
+
+
