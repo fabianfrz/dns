@@ -26,7 +26,7 @@ class MyServer < Async::DNS::Server
     "%s:%s" % [x1, x2]
   end
 
-	def process(name, resource_class, transaction)
+  def process(name, resource_class, transaction)
     puts name
     case resource_class.to_s
     when Resolv::DNS::Resource::IN::A.to_s
@@ -47,7 +47,7 @@ class MyServer < Async::DNS::Server
       puts resource_class
       transaction.fail!(:NXDomain)
     end
-	end
+  end
 end
 config = YAML.load ( File.read ('config.yml'))
 Async::Reactor.run do
