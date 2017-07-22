@@ -47,9 +47,7 @@ class MyServer < Async::DNS::Server
     begin
       @modules.each do |mod|
         begin
-          puts name.class
           mod.process(name, resource_class, transaction)
-          puts name
         rescue DNSBlockException
           raise
         rescue
