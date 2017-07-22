@@ -8,5 +8,5 @@ Forwarder:
   - proto: udp
     host: '192.168.1.1'
     port: 53
-
+DomainBlacklist: './blacklist.txt'
 
