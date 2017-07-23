@@ -9,4 +9,7 @@ Forwarder:
     host: '192.168.1.1'
     port: 53
 DomainBlacklist: './blacklist.txt'
+TunnelDetection:
+  Threshold: 3
+  Timespan: 10
 

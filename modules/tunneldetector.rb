@@ -6,8 +6,8 @@ module DNSFilterModule
       @config = config
       @logger = logger
       @querylog = []
-      @timespan = 10
-      @threshold = 3
+      @timespan = @config['TunnelDetection']['Timespan']
+      @threshold = @config['TunnelDetection']['Threshold']
       @blocked_names = []
       start_monitor
     end
