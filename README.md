@@ -1,6 +1,4 @@
-# DNS Server
-DNS Proxy (DNS64 and filter)
-
+# DNS Proxy (DNS64 and filter)
 
 This is a DNS Proxy Server to filter out some DNS traffic and it is able to do DNS64 for NAT64 setups.
 It supports differend modules which are loaded if they are stored in the `modules` directory.
