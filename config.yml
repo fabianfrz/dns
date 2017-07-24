@@ -12,4 +12,7 @@ DomainBlacklist: './blacklist.txt'
 TunnelDetection:
   Threshold: 3
   Timespan: 10
-
+Redirect:
+  test.test:
+    A: "127.0.0.1"
+    AAAA: "::1"

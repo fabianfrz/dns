@@ -5,6 +5,8 @@ require 'logger'
 
 module DNSFilterModule; end
 class DNSBlockException < RuntimeError; end
+class DNSAnsweredException < RuntimeError; end
+
 Dir['./modules/*.rb'].each do |mod|
   require_relative mod
 end
@@ -50,6 +52,8 @@ class MyServer < Async::DNS::Server
           mod.process(name, resource_class, transaction)
         rescue DNSBlockException
           raise
+        rescue DNSAnsweredException
+          return
         rescue
           puts $!
         end
