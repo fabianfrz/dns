@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 require 'async/dns'
 require 'yaml'
-require 'logger'
 
 module DNSFilterModule; end
 class DNSBlockException < RuntimeError; end
@@ -17,13 +16,12 @@ class MyServer < Async::DNS::Server
     @resolver ||= Async::DNS::Resolver.new(y2a_tuple(config['Forwarder']))
     @DNS64Prefix = config['DNS64Prefix'] || '::'
     @modules = []
-    @logger = Logger.new(STDOUT)
     DNSFilterModule.constants.map {|m| DNSFilterModule.const_get m }.each do |c|
       begin
         @modules << c.new(config, @logger)
-        puts "Module loaded: #{c.name}"
+        @logger.info "Module loaded: #{c.name}"
       rescue
-        puts "Cannot start module #{c.name}"
+        @logger.info "Cannot start module #{c.name}"
       end
     end
   end
@@ -69,11 +67,9 @@ class MyServer < Async::DNS::Server
             @DNS64Prefix + encode_nat_64(address)
           end
         end
-        puts addr
+        transaction.response.aa = 0
         transaction.respond!(addr.first)
       else
-        puts "OTHER"
-        puts resource_class
         transaction.fail!(:NXDomain)
       end
     rescue DNSBlockException
