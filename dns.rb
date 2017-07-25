@@ -14,7 +14,7 @@ class MyServer < Async::DNS::Server
   def initialize(config)
     super ({listen: y2a_tuple(config['Listen'])})
     @resolver ||= Async::DNS::Resolver.new(y2a_tuple(config['Forwarder']))
-    @DNS64Prefix = config['DNS64Prefix'] || '::'
+    @DNS64Prefix = config['DNS64Prefix']
     @modules = []
     DNSFilterModule.constants.map {|m| DNSFilterModule.const_get m }.each do |c|
       begin
@@ -60,15 +60,19 @@ class MyServer < Async::DNS::Server
       when Resolv::DNS::Resource::IN::A.to_s
         transaction.passthrough!(@resolver)
       when Resolv::DNS::Resource::IN::AAAA.to_s
-        begin
-          addr = @resolver.addresses_for(name, resource_class)
-        rescue
-          addr = @resolver.addresses_for(name, Resolv::DNS::Resource::IN::A).map do |address|
-            @DNS64Prefix + encode_nat_64(address)
+        if @DNS64Prefix
+          begin
+            addr = @resolver.addresses_for(name, resource_class)
+          rescue
+            addr = @resolver.addresses_for(name, Resolv::DNS::Resource::IN::A).map do |address|
+              @DNS64Prefix + encode_nat_64(address)
+            end
           end
+          transaction.response.aa = 0
+          transaction.respond!(addr.first)
+        else
+          transaction.passthrough!(@resolver)
         end
-        transaction.response.aa = 0
-        transaction.respond!(addr.first)
       else
         transaction.fail!(:NXDomain)
       end
