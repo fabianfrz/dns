@@ -16,3 +16,6 @@ Redirect:
   test.test:
     A: "127.0.0.1"
     AAAA: "::1"
+AntiBeacon:
+  Length: 10
+  Threshold: 0.5
