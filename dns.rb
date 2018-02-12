@@ -12,7 +12,7 @@ end
 
 class MyServer < Async::DNS::Server
   def initialize(config)
-    super ({listen: y2a_tuple(config['Listen'])})
+    super(y2a_tuple(config['Listen']))
     # @logger.level = Logger::DEBUG
     @resolver ||= Async::DNS::Resolver.new(y2a_tuple(config['Forwarder']))
     @DNS64Prefix = config['DNS64Prefix']
